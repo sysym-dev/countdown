@@ -11,9 +11,15 @@ export function useMetadata() {
     date.value = dateStorage ? new Date(localStorage.getItem('date')) : null;
   }
 
+  function store(values) {
+    localStorage.setItem('title', values.title);
+    localStorage.setItem('date', values.date);
+  }
+
   return {
     title,
     date,
     load,
+    store,
   };
 }

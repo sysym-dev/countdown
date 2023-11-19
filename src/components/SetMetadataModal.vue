@@ -1,5 +1,7 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, reactive, watch } from 'vue';
+import UiInput from './ui/ui-input.vue';
+import { useMetadata } from 'src/metadata';
 
 const props = defineProps({
   visible: {
@@ -7,7 +9,9 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(['update:visible']);
+const emit = defineEmits(['update:visible', 'saved']);
+
+const { store } = useMetadata();
 
 const visible = computed({
   get() {
@@ -18,36 +22,51 @@ const visible = computed({
   },
 });
 
+const form = reactive({
+  title: null,
+  date: null,
+});
+
+function resetForm() {
+  form.title = null;
+  form.date = null;
+}
+
 function handleClose() {
   visible.value = false;
 }
+function handleSave() {
+  store(form);
+  emit('saved');
+
+  visible.value = false;
+}
+
+watch(visible, (value) => {
+  if (value) {
+    resetForm();
+  }
+});
 </script>
 
 <template>
   <div v-if="visible" class="fixed inset-0 bg-black bg-opacity-50">
     <div class="h-full relative flex items-center justify-center">
-      <div class="shadow-lg w-[400px]">
+      <form class="shadow-lg w-[400px]" v-on:submit.prevent="handleSave">
         <div class="bg-white border-b p-4 rounded-t-lg text-center">
           <h2 class="text-2xl">Set Countdown</h2>
         </div>
         <div class="bg-white p-4 flex flex-col gap-y-4">
-          <input
-            type="text"
-            placeholder="Title"
-            class="w-full bg-white border border-gray-200 px-3 py-2 rounded-lg focus:outline-0 focus:ring-1 focus:ring-gray-900 focus:ring-offset-0 focus:border-gray-900"
-          />
-          <input
-            type="date"
-            class="w-full bg-white border border-gray-200 px-3 py-2 rounded-lg focus:outline-0 focus:ring-1 focus:ring-gray-900 focus:ring-offset-0 focus:border-gray-900"
-          />
+          <ui-input placeholder="Title" v-model="form.title" />
+          <ui-input type="date" v-model="form.date" />
         </div>
         <div
           class="bg-white border-t p-4 rounded-b-lg flex items-center justify-end gap-x-4 text-lg"
         >
-          <button>Save</button>
-          <button v-on:click="handleClose">Cancel</button>
+          <button type="submit">Save</button>
+          <button type="button" v-on:click="handleClose">Cancel</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>

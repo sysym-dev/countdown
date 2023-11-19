@@ -14,6 +14,10 @@ const visibleSetMetadataModal = ref(false);
 function handleSetMetadata() {
   visibleSetMetadataModal.value = true;
 }
+function handleMetadataSaved() {
+  load();
+  start(date.value);
+}
 
 load();
 start(date.value);
@@ -69,5 +73,8 @@ start(date.value);
     </div>
   </div>
 
-  <set-metadata-modal v-model:visible="visibleSetMetadataModal" />
+  <set-metadata-modal
+    v-model:visible="visibleSetMetadataModal"
+    v-on:saved="handleMetadataSaved"
+  />
 </template>
