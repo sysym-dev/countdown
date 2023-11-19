@@ -3,9 +3,17 @@ import { parseDate } from 'src/utils/date';
 import Nature from './assets/image/nature.jpg';
 import { useMetadata } from './metadata';
 import { useCountdown } from './countdown';
+import SetMetadataModal from './components/SetMetadataModal.vue';
+import { ref } from 'vue';
 
 const { title, date, load } = useMetadata();
 const { countdown, isFinished, start } = useCountdown();
+
+const visibleSetMetadataModal = ref(false);
+
+function handleSetMetadata() {
+  visibleSetMetadataModal.value = true;
+}
 
 load();
 start(date.value);
@@ -21,7 +29,12 @@ start(date.value);
     <div class="fixed inset-0 bg-black bg-opacity-50"></div>
     <div class="text-center text-white relative space-y-4">
       <h1 class="text-2xl">
-        <template v-if="!date">The countdown date has not been set</template>
+        <template v-if="!date">
+          The countdown date has not been set.
+          <a class="underline" href="" v-on:click.prevent="handleSetMetadata"
+            >Set Now</a
+          >
+        </template>
         <template v-else>
           {{ title ? `${title} - ` : '' }}
           {{ isFinished ? 'Finished' : parseDate(date).format('LLL') }}
@@ -55,4 +68,6 @@ start(date.value);
       </div>
     </div>
   </div>
+
+  <set-metadata-modal v-model:visible="visibleSetMetadataModal" />
 </template>
