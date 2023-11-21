@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
+        sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
       },
     },
   },
