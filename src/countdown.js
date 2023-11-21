@@ -41,6 +41,7 @@ export function useCountdown() {
   }
 
   function start(date) {
+    clearInterval(countdownInterval.value);
     calculateDiff(date);
 
     countdownInterval.value = setInterval(() => {

@@ -1,7 +1,8 @@
 <script setup>
-import { computed, reactive, watch } from 'vue';
+import { computed, watch } from 'vue';
 import UiInput from './ui/ui-input.vue';
 import { useMetadata } from 'src/metadata';
+import { parseDate } from 'src/utils/date';
 
 const props = defineProps({
   visible: {
@@ -11,7 +12,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:visible', 'saved']);
 
-const { store } = useMetadata();
+const { store, title, date, load } = useMetadata();
 
 const visible = computed({
   get() {
@@ -22,21 +23,24 @@ const visible = computed({
   },
 });
 
-const form = reactive({
-  title: null,
-  date: null,
+const dateValue = computed({
+  get() {
+    return parseDate(date.value).format('YYYY-MM-DD');
+  },
+  set(value) {
+    date.value = value;
+  },
 });
 
 function resetForm() {
-  form.title = null;
-  form.date = null;
+  load();
 }
 
 function handleClose() {
   visible.value = false;
 }
 function handleSave() {
-  store(form);
+  store();
   emit('saved');
 
   visible.value = false;
@@ -57,8 +61,8 @@ watch(visible, (value) => {
           <h2 class="text-2xl">Set Countdown</h2>
         </div>
         <div class="bg-white p-4 flex flex-col gap-y-4">
-          <ui-input placeholder="Title" v-model="form.title" />
-          <ui-input type="date" v-model="form.date" />
+          <ui-input placeholder="Title" v-model="title" />
+          <ui-input type="date" v-model="dateValue" />
         </div>
         <div
           class="bg-white border-t p-4 rounded-b-lg flex items-center justify-end gap-x-4 text-lg"
