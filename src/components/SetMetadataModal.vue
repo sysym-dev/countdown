@@ -56,7 +56,11 @@ watch(visible, (value) => {
 <template>
   <div v-if="visible" class="fixed inset-0 bg-black bg-opacity-50">
     <div class="h-full relative flex items-center justify-center">
-      <form class="shadow-lg w-[400px]" v-on:submit.prevent="handleSave">
+      <form
+        class="shadow-lg w-[400px]"
+        v-on:submit.prevent="handleSave"
+        v-click-outside="handleClose"
+      >
         <div class="bg-white border-b p-4 rounded-t-lg text-center">
           <h2 class="text-2xl">Set Countdown</h2>
         </div>
