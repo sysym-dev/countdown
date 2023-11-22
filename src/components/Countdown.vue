@@ -27,11 +27,15 @@ const props = defineProps({
     }),
   },
 });
+const emit = defineEmits(['saved-metadata']);
 
 const visibleSetMedatadaModal = ref(false);
 
 function handleSetMetadata() {
   visibleSetMedatadaModal.value = true;
+}
+function handleSavedMetadata() {
+  emit('saved-metadata');
 }
 </script>
 
@@ -94,5 +98,8 @@ function handleSetMetadata() {
       Edit
     </ui-button>
   </div>
-  <set-metadata-modal v-model:visible="visibleSetMedatadaModal" />
+  <set-metadata-modal
+    v-model:visible="visibleSetMedatadaModal"
+    v-on:saved="handleSavedMetadata"
+  />
 </template>
