@@ -1,4 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
+import tailwindForm from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -6,9 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
+        sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindForm],
 };
