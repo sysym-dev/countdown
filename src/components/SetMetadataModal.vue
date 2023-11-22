@@ -1,6 +1,8 @@
 <script setup>
-import { computed, watch } from 'vue';
-import UiInput from './ui/ui-input.vue';
+import { computed } from 'vue';
+import UiInput from './ui/UiInput.vue';
+import UiButton from './ui/UiButton.vue';
+import UiModal from './ui/UiModal.vue';
 import { useMetadata } from 'src/metadata';
 import { parseDate } from 'src/utils/date';
 
@@ -45,36 +47,30 @@ function handleSave() {
 
   visible.value = false;
 }
-
-watch(visible, (value) => {
-  if (value) {
-    resetForm();
-  }
-});
 </script>
 
 <template>
-  <div v-if="visible" class="fixed inset-0 bg-black bg-opacity-50">
-    <div class="h-full relative flex items-center justify-center">
-      <form
-        class="shadow-lg w-[400px]"
-        v-on:submit.prevent="handleSave"
-        v-click-outside="handleClose"
+  <ui-modal v-model="visible" v-on:visible="resetForm">
+    <form
+      class="shadow-lg w-[400px]"
+      v-on:submit.prevent="handleSave"
+      v-click-outside="handleClose"
+    >
+      <div class="bg-white border-b p-4 rounded-t-lg text-center">
+        <h2 class="text-lg font-bold text-sky-900">Set Countdown</h2>
+      </div>
+      <div class="bg-white p-4 flex flex-col gap-y-4">
+        <ui-input placeholder="Title" v-model="title" />
+        <ui-input type="date" v-model="dateValue" />
+      </div>
+      <div
+        class="bg-white border-t p-4 rounded-b-lg flex items-center justify-end gap-x-2 text-lg"
       >
-        <div class="bg-white border-b p-4 rounded-t-lg text-center">
-          <h2 class="text-2xl">Set Countdown</h2>
-        </div>
-        <div class="bg-white p-4 flex flex-col gap-y-4">
-          <ui-input placeholder="Title" v-model="title" />
-          <ui-input type="date" v-model="dateValue" />
-        </div>
-        <div
-          class="bg-white border-t p-4 rounded-b-lg flex items-center justify-end gap-x-4 text-lg"
+        <ui-button type="submit" transparent>Save</ui-button>
+        <ui-button type="button" transparent v-on:click="handleClose"
+          >Cancel</ui-button
         >
-          <button type="submit">Save</button>
-          <button type="button" v-on:click="handleClose">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
+      </div>
+    </form>
+  </ui-modal>
 </template>

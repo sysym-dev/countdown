@@ -1,5 +1,9 @@
 <script setup>
 import { parseDate } from 'src/utils/date';
+import { PencilSquareIcon } from '@heroicons/vue/24/solid';
+import UiButton from './ui/UiButton.vue';
+import SetMetadataModal from './SetMetadataModal.vue';
+import { ref } from 'vue';
 
 const props = defineProps({
   title: {
@@ -23,6 +27,12 @@ const props = defineProps({
     }),
   },
 });
+
+const visibleSetMedatadaModal = ref(false);
+
+function handleSetMetadata() {
+  visibleSetMedatadaModal.value = true;
+}
 </script>
 
 <template>
@@ -76,4 +86,13 @@ const props = defineProps({
       </div>
     </div>
   </div>
+  <div class="fixed bottom-0 p-4 w-full flex sm:justify-end">
+    <ui-button custom-class="w-full sm:w-auto" v-on:click="handleSetMetadata">
+      <template #icon>
+        <pencil-square-icon class="w-4 h-4" />
+      </template>
+      Edit
+    </ui-button>
+  </div>
+  <set-metadata-modal v-model:visible="visibleSetMedatadaModal" />
 </template>
