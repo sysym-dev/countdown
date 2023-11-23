@@ -4,7 +4,7 @@ import { useCountdown } from './countdown';
 import Countdown from './components/Countdown.vue';
 
 const { title, date, load } = useMetadata();
-const { countdown, start } = useCountdown();
+const { countdown, start, isFinished } = useCountdown();
 
 function handleSavedMetadata() {
   load();
@@ -20,6 +20,7 @@ start(date.value);
     :title="title"
     :date="date"
     :countdown="countdown"
+    :is-finished="isFinished"
     v-on:saved-metadata="handleSavedMetadata"
   />
 </template>
